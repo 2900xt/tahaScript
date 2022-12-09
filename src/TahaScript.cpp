@@ -8,10 +8,8 @@ int main(int argc, char** argv)
     Preprocessor* p;
 
     try{
-        if(argc == 2){
-            p = new Preprocessor(argv[1], defaultFileName);
-        } else {
-            p = new Preprocessor(argv[1], argv[2]);
+        for(int i = 0; i < argc; i++) {
+            
         }
     } catch (...) {
         printf("Usage: <inputFile> <outputFile>\n");

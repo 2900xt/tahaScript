@@ -1,6 +1,6 @@
 SRCDIR = ./src
 LIBDIR = ./lib
-OBJDIR = ./obj
+OBJDIR = ./bin
 
 CFLAGS = -I $(LIBDIR)
 CC = g++ $(CFLAGS)
@@ -18,5 +18,3 @@ all:
 	$(CC) -c $(SRCDIR)/GlobalSymbolTable.cpp -o $(OBJDIR)/GlobalSymbolTable.o
 
 	$(LD) $(OBJDIR)/Main.o $(OBJDIR)/Preprocessor.o $(OBJDIR)/stringFunctions.o $(OBJDIR)/GlobalSymbolTable.o -o ./tscc
-
-	

@@ -25,12 +25,13 @@ private:
 	long inputFileOffset;
 	long outputFileOffset;
 	preprocessorWord* getFlag(char* buffer);
-	void includeFile(const char* file);
-	void getLine(FILE* file, char* buffer);
+	void includeFile(void);
+	void getLine(char* buffer);
 public: 
 	Preprocessor(const char* inputFilePath, const char* outputFilePath);
 	void processFile(void);
-	~Preprocessor(){
+	
+	~Preprocessor(void){
 		fclose(inputFile);
 		fclose(outputFile);
 	}
