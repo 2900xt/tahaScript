@@ -111,13 +111,13 @@ void Preprocessor::processFile(void) {
 			IDENTIFIER = ARG2;
 			defineSymbol();
 			break;
-		} case 'f':{
-			if(checkIfSymbolDefined(IDENTIFIER) != 0){
-				printf("Symbol %s is not defined!\n", IDENTIFIER);
+		} case 'n':{
+			if(checkIfSymbolDefined(IDENTIFIER) == 0){
+				printf("Symbol %s is defined!\n", IDENTIFIER);
 				break;
 			}
 
-			printf("\nSymbol %s is defined!\n", IDENTIFIER);
+			printf("Symbol %s is not defined!\n", IDENTIFIER);
 
 			//Get characters untill '#e'
 			char* characterBuffer = (char*)malloc(MAX_LINE_SIZE);
