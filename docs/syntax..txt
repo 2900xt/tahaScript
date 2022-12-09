@@ -1,0 +1,20 @@
+Syntax for tahaScript - list of preprocessor derivatives in order from highest priority to lowest:
+
+
+
+IMPLEMENTED:                                     PARAMS:                         EXAMPLE:
+
+'#i' -> Include file                            (fileName)                      "#i include.tsc"
+'#c' -> Define constant global variable         (type, value, identifier)       "#c integer my_int_identifier 21"
+
+WIP:
+
+'#d' -> Define mutable variables                (type, value, identifier)       "#d integer my_int_identifier 21"
+'#m' -> modify mutable variables                (identifier, value)             "#m my_int_identifier 21"
+'#f' -> If symbol defined                       (identifier)                    "#f my_int_identifier"
+'#n' -> If symbol is not defined                (identifier)                    "#n my_int_identifier"
+'#e' -> Ends the if block                       NONE                            "#e"
+
+'<<< to >>>' -> comment blocks that will not be interpreted
+
+'::: to ;;;' -> Declares the lines in between this block to be code that is not to be read by the preprocessor 
