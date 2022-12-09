@@ -31,13 +31,14 @@ void Preprocessor::getLine(FILE* file, char* buffer) {
 }
 
 preprocessorWord* Preprocessor::getFlag(char* buffer) {
-	getLine(this->inputFile, buffer);
-	preprocessorWord* ret = new preprocessorWord;
-
 	if (buffer == NULL) {
 		printf("buffer is null!");
 		throw -1;
 	}
+
+	getLine(this->inputFile, buffer);
+	preprocessorWord* ret = new preprocessorWord;
+
 	
 	if (buffer[0] != '#') {
 		printf("no flag found!\n%s", buffer);
@@ -68,23 +69,32 @@ void Preprocessor::includeFile(const char* file) {
 		outputFileOffset++;
 		currentChar = fgetc(includedFile);
 	}
-
 }
+
+#define TYPE 		parameterOffsets[0]
+#define VALUE 		parameterOffsets[1]
+#define IDENTIFIER 	parameterOffsets[2]
+#define MISC		parameterOffsets[3]
 
 void Preprocessor::processFile(void) {
 	char* buffer = (char*)calloc(1, MAX_LINE_SIZE);
 	preprocessorWord* currentFlag = getFlag(buffer);
-	int parameterOffsets[4];
+	char* parameterOffsets[4];
 	
 	switch (currentFlag->flag) {
 		 case 'c': {
-			parameterOffsets[0] = 0;																//Type
-			parameterOffsets[1] = strlenTillSpaces(currentFlag->data, 1);							//Value
-			parameterOffsets[2] = strlenTillSpaces(currentFlag->data, 2);							//Identifier
-			Symbol* symbol = translateSymbolValue(cutStringTillCharacter(currentFlag->data + parameterOffsets[0], ' '), cutStringTillCharacter(currentFlag->data + parameterOffsets[1], ' '));
-			printf("symbol \"%s\" has a value of: %d, and a type of: %d\n",currentFlag->data + parameterOffsets[2] ,symbol->value.integer, symbol->type);
-			addSymbolIntoGlobalTable(symbol, currentFlag->data + parameterOffsets[2]);
-			printf("symbol is defined? %d\n", checkIfSymbolDefined(currentFlag->data + parameterOffsets[2]));
+			TYPE = cutStringTillCharacter(currentFlag->data, ' ');
+			VALUE = cutStringTillCharacter(currentFlag->data + strlenTillSpaces(currentFlag->data, 1), ' ');
+			IDENTIFIER = cutStringTillCharacter(currentFlag->data + strlenTillSpaces(currentFlag->data, 2), ' ');
+			Symbol* symbol = translateSymbolValue(TYPE, VALUE);
+
+			printf("symbol \"%s\" has a value of: %d, and a type of: %d\n", IDENTIFIER, symbol->value.integer, symbol->type);
+			addSymbolIntoGlobalTable(symbol, IDENTIFIER);
+			printf("symbol is defined? %d\n", checkIfSymbolDefined(IDENTIFIER));
+
+			free(currentFlag->data);
+			free(currentFlag);
+
 			break;
 		} case 'i': {
 			includeFile(currentFlag->data);
