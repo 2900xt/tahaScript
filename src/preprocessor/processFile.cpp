@@ -1,10 +1,4 @@
 #include <tahaScript>
-/*
-TODO:
-1. File including
-2. Error handling
-3. Optimization
-*/
 
 std::string outputBuffer{""};
 
@@ -75,7 +69,7 @@ void evaluatePreprocessorWord(char** buffer, int* bufferPtr) {
 
 }
 
-std::string processFile() {
+std::vector<std::string>* processFile() {
     /*
     1. Get file size
     2. Load the file into a memory buffer
@@ -140,6 +134,17 @@ std::string processFile() {
     }
     
     free(inputFileBuffer);
-    return outputBuffer;
+
+    //store each line as a vector of strings
+
+    std::vector<std::string>* output = new std::vector<std::string>;
+
+    int outputIndex = 0;
+    int index = 0;
+    while(outputBuffer[index] != '\n'){
+        index++;
+    }
+
+    return output;
 
 }
