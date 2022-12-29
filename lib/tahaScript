@@ -1,0 +1,24 @@
+#include <iostream>
+#include <cstdarg>
+#include <fstream>
+#include <string>
+#include <cstring>
+#include <vector>
+#include <experimental/filesystem>
+
+namespace tahaScript{
+    extern std::string inputFileName;
+    extern std::ifstream* inputFile;
+    extern bool debugEnabled;
+    extern int lineEnable;
+    extern int inputFileLine;
+}
+
+std::string processFile();
+void debugPrintf(const char* fmt, ...);
+void symbolTableInit();
+void defineNewSymbol(std::string data);
+void ifDefined(std::string buffer);
+void throwError(const char* fmt, ...);
+void ifDefinedToAValue(std::string buffer);
+std::vector<std::string>  getParams(std::string buffer, int num, int firstParamOffset);

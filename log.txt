@@ -1,0 +1,16 @@
+Trying to open file: 'test/code.tsc'
+Opened file: 'test/code.tsc'
+File size is 93 bytes
+'#' found on line: 1
+DEF:	 Identifier: HOLASDsdsada	Value: 10021231
+'#' found on line: 3
+Param #0: HOLASDsdsada
+Param #1: 1002123
+'#' found on line: 5
+'#' found on line: 6
+Param #0: test/include.tsc
+
+dsa
+
+hello world
+sads

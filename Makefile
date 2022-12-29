@@ -1,20 +1,31 @@
-SRCDIR = ./src
-LIBDIR = ./lib
+CXX = g++
+CFLAGS = -O2 -I lib -lstdc++fs --std=c++17
+
+LD = g++
+LDFLAGS = -lstdc++fs
+
+OBJS = $(OBJDIR)/main.o $(OBJDIR)/defineSymbols.o $(OBJDIR)/processFile.o 
 OBJDIR = ./bin
 
-CFLAGS = -I $(LIBDIR)
-CC = g++ $(CFLAGS)
+IDIR = ./lib
+DEPS = $(IDIR)/tahaScript
 
-LDFLAGS = 
-LD = g++ $(LDFLAGS)
+SRCDIR = ./src
+SRC = $(SRCDIR)/main.cpp $(SRCDIR)/preprocessor/processFile.cpp $(SRCDIR)/preprocessor/defineSymbols.cpp
 
-.PHONY: all
+TSC = ./tscc
 
-all:
-	clear
-	$(CC) -c $(SRCDIR)/TahaScript.cpp -o $(OBJDIR)/Main.o
-	$(CC) -c $(SRCDIR)/Preprocessor.cpp -o $(OBJDIR)/Preprocessor.o
-	$(CC) -c $(SRCDIR)/stringFunctions.cpp -o $(OBJDIR)/stringFunctions.o
-	$(CC) -c $(SRCDIR)/GlobalSymbolTable.cpp -o $(OBJDIR)/GlobalSymbolTable.o
+objs: $(SRC) $(DEPS)
+	$(CXX) -c -o $(OBJDIR)/main.o $(SRCDIR)/main.cpp $(CFLAGS)
+	$(CXX) -c -o $(OBJDIR)/processFile.o $(SRCDIR)/preprocessor/processFile.cpp $(CFLAGS)
+	$(CXX) -c -o $(OBJDIR)/defineSymbols.o $(SRCDIR)/preprocessor/defineSymbols.cpp $(CFLAGS)
 
-	$(LD) $(OBJDIR)/Main.o $(OBJDIR)/Preprocessor.o $(OBJDIR)/stringFunctions.o $(OBJDIR)/GlobalSymbolTable.o -o ./tscc
+
+$(TSC): objs
+	$(LD) $(OBJS) -o $(TSC) $(LDFLAGS)
+
+
+.PHONY: test
+
+test: $(TSC)
+	$(TSC) -f test/code.tsc -d --logfile log.txt
