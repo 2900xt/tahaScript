@@ -1,11 +1,12 @@
 Syntax for tahaScript
 =====================
 
-1. list of preprocessor commands:
+list of preprocessor commands:
+------------------------------
 
-Lines that start with '#' will be read by the preprocessor
+#Lines that start with '#' will be read by the preprocessor
 
-__COMMAND:                                           PARAMS:                         EXAMPLE:__
+COMMAND                                               PARAMS                         EXAMPLE
 
 * '#d'    -> Define constant global variable         (identifier, value)             *#c my_identifier 21*
 * '#f'    -> If symbol defined                       (identifier)                    *#f my_identifier*
