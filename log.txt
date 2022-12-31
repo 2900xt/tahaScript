@@ -1,16 +1,31 @@
 Trying to open file: 'test/code.tsc'
 Opened file: 'test/code.tsc'
-File size is 93 bytes
-'#' found on line: 1
-DEF:	 Identifier: HOLASDsdsada	Value: 10021231
-'#' found on line: 3
-Param #0: HOLASDsdsada
-Param #1: 1002123
-'#' found on line: 5
-'#' found on line: 6
+File size is 66 bytes
+'#i' found on line: 2
 Param #0: test/include.tsc
+'#n' found on line: 3
+Param #0: INCLUDE_TSC
+'#d' found on line: 4
+DEF:	 Identifier: INCLUDE_TSC	Value: 0
 
-dsa
+'#e' found on line: 8
+'#i' found on line: 10
+Param #0: test/include.tsc
+'#n' found on line: 11
+Param #0: INCLUDE_TSC
+'#d' found on line: 12
+DEF:	 Identifier: INCLUDE_TSC	Value: 0
 
-hello world
-sads
+'#e' found on line: 16
+first:
+
+
+
+
+hello
+
+
+second:
+
+
+thrid:

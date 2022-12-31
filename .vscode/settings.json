@@ -4,6 +4,7 @@
         "fstream": "cpp",
         "filesystem": "cpp",
         "limits": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "tahascript": "cpp"
     }
 }

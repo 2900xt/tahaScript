@@ -62,10 +62,9 @@ int main(int _argc, char** _argv){
     }
 
     if(_filename == nullptr){
-        std::cerr << "No filename provided (use '-f' to specity a code file)";
+        std::cout << "No filename provided (use '-f' to specity a code file)" << std::endl;
         return -1;
     }
-
 
     tahaScript::inputFileName = std::string(_filename);
 
@@ -75,7 +74,7 @@ int main(int _argc, char** _argv){
     tahaScript::inputFile->open(tahaScript::inputFileName);
 
     if(!tahaScript::inputFile->is_open()) {
-        throwError("Fatal Error: Unable to open file: %s", tahaScript::inputFileName);
+        throwError("Fatal Error: Unable to open file: %s", tahaScript::inputFileName.c_str());
     }
 
     debugPrintf("Opened file: '%s'\n", tahaScript::inputFileName.c_str());

@@ -12,13 +12,15 @@ namespace tahaScript{
     extern bool debugEnabled;
     extern int lineEnable;
     extern int inputFileLine;
+    extern int currentPos;
 }
 
-std::string processFile();
+std::vector<std::string>* processFile();
 void debugPrintf(const char* fmt, ...);
 void symbolTableInit();
 void defineNewSymbol(std::string data);
 void ifDefined(std::string buffer);
 void throwError(const char* fmt, ...);
+int strlenTillCharacter(const char* src, char c);
 void ifDefinedToAValue(std::string buffer);
 std::vector<std::string>  getParams(std::string buffer, int num, int firstParamOffset);

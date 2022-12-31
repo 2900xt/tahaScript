@@ -1,1 +1,6 @@
-hello world
+#n INCLUDE_TSC
+#d INCLUDE_TSC 0
+
+hello
+
+#e

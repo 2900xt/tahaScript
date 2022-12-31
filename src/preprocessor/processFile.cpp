@@ -1,17 +1,17 @@
 #include <tahaScript>
 
-std::string outputBuffer{""};
-
 namespace tahaScript
 {
     int lineEnable = 2;
     int inputFileLine = 1;
+    int currentPos= 0;
 }
 
+size_t includeFile(std::string& inputBuffer, int pos){
 
-size_t includeFile(std::string inputBuffer){
+    std::string paramsSRC = std::string(inputBuffer.c_str() + pos);
 
-    std::vector<std::string> params = getParams(inputBuffer, 1, 3);
+    std::vector<std::string> params = getParams(paramsSRC, 1, 3);
 
     std::experimental::filesystem::path path{params[0]};
 
@@ -30,43 +30,52 @@ size_t includeFile(std::string inputBuffer){
 
     file.getline(fileBuffer, fileSize, EOF);
 
-    outputBuffer.append(fileBuffer);
+    inputBuffer.insert(pos + strlenTillCharacter(paramsSRC.c_str(), '\n') + 1, fileBuffer);
 
     return fileSize;
 }
 
-void evaluatePreprocessorWord(char** buffer, int* bufferPtr) {
+void evaluatePreprocessorWord(std::string& inputbuffer) {
     
-    switch((*buffer)[*bufferPtr+1]){
+    const char* ptr = inputbuffer.c_str() + tahaScript::currentPos;
+
+    switch(ptr[1]){
     case 'i':
-        includeFile(std::string((*buffer) + *bufferPtr));
+        includeFile(inputbuffer, tahaScript::currentPos);
         break;
     case 'd':
-        defineNewSymbol(std::string((*buffer) + *bufferPtr));
+        defineNewSymbol(std::string(ptr));
         break;
     case 'f':
-        if((*buffer)[*bufferPtr+2] == 'v'){
-            ifDefinedToAValue(std::string(*(buffer) + *bufferPtr));
+        if(ptr[2] == 'v') {
+            ifDefinedToAValue(std::string(ptr));
             break;
         }
-        ifDefined(std::string(*(buffer) + *bufferPtr));
+        ifDefined(std::string(ptr));
         break;
     case 'n':
-        if((*buffer)[*bufferPtr+2] == 'v'){
-            ifDefinedToAValue(std::string(*(buffer) + *bufferPtr));
+        if(ptr[2] == 'v'){
+            ifDefinedToAValue(std::string(ptr));
             tahaScript::lineEnable = !(bool)tahaScript::lineEnable;
             break;
         }
-        ifDefined(std::string(*(buffer) + *bufferPtr));
+        ifDefined(std::string(ptr));
         tahaScript::lineEnable = !(bool)tahaScript::lineEnable;
         break;
     case 'e':
         tahaScript::lineEnable = 2;
         break;
     default:
-        throwError("Invalid Preprocessor Directive: %c" , (*buffer)[*bufferPtr+1]);
+        throwError("Invalid Preprocessor Directive: %c" , ptr[1]);
     }
 
+}
+
+std::string getLine(const std::string& src, int offset){
+    int _offset = offset;
+    while(src[offset++] != '\n');
+    std::string out = src.substr(_offset, offset - _offset);
+    return out;
 }
 
 std::vector<std::string>* processFile() {
@@ -77,25 +86,24 @@ std::vector<std::string>* processFile() {
     symbolTableInit();
 
     size_t inputFileLength;
-    char* inputFileBuffer;
+    std::string inputFileBuffer(500, ' ');
+    std::string outputBuffer;
 
     std::experimental::filesystem::path filePath{tahaScript::inputFileName};
     inputFileLength = std::experimental::filesystem::file_size(filePath) + 1;
 
     debugPrintf("File size is %d bytes\n", inputFileLength);
 
-    inputFileBuffer = (char*)calloc(1, inputFileLength);
-    
-    tahaScript::inputFile->getline(inputFileBuffer, inputFileLength, EOF);
+    std::getline(*tahaScript::inputFile, inputFileBuffer, (char)EOF);
 
     char currentCharacter = 0;
     char prevCharacter = 0;
     bool commentMode = false;
 
-    for(int currentIndex = 0 ; currentIndex < inputFileLength + 1 ; currentIndex++){
+    for(; tahaScript::currentPos < inputFileBuffer.length() + 1 ; tahaScript::currentPos++){
 
         prevCharacter = currentCharacter;
-        currentCharacter = inputFileBuffer[currentIndex];
+        currentCharacter = inputFileBuffer[tahaScript::currentPos];
 
         if(currentCharacter == '\n'){
             commentMode = false;
@@ -112,8 +120,8 @@ std::vector<std::string>* processFile() {
         }
 
         else if(currentCharacter == '#' && (prevCharacter == '\n' || prevCharacter == 0)){
-            debugPrintf("'#' found on line: %d\n", tahaScript::inputFileLine);
-            evaluatePreprocessorWord(&inputFileBuffer, &currentIndex);
+            debugPrintf("'#%c' found on line: %d\n", inputFileBuffer[tahaScript::currentPos+1], tahaScript::inputFileLine);
+            evaluatePreprocessorWord(inputFileBuffer);
             commentMode = true;
             continue;
         } 
@@ -132,17 +140,20 @@ std::vector<std::string>* processFile() {
     if(tahaScript::lineEnable < 2){
         throwError("Missing an \"#e\" statement to end the if block!");
     }
-    
-    free(inputFileBuffer);
 
     //store each line as a vector of strings
 
-    std::vector<std::string>* output = new std::vector<std::string>;
+    std::vector<std::string>* output = new std::vector<std::string>{1};
 
-    int outputIndex = 0;
-    int index = 0;
-    while(outputBuffer[index] != '\n'){
-        index++;
+    int currentIndex = 0;
+    for(int i = 0; i < outputBuffer.length(); i++){
+        if(outputBuffer[i] == '\n'){
+            currentIndex++;
+            output->push_back("");
+            continue;
+        }
+
+        output->at(currentIndex).push_back(outputBuffer[i]);
     }
 
     return output;

@@ -64,7 +64,7 @@ void defineNewSymbol(std::string data){
     nextFreeEntry->data.setIdentifier(identifier);
 
     
-    debugPrintf("DEF:\t Identifier: %s\tValue: %s\n", nextFreeEntry->data.getIdentifier().c_str(), nextFreeEntry->data.getValue().c_str());
+    debugPrintf("DEF:\t Identifier: %s\tValue: %s\n\n", nextFreeEntry->data.getIdentifier().c_str(), nextFreeEntry->data.getValue().c_str());
     
     nextFreeEntry->next = (SymbolTableEntry*)calloc(1, sizeof(SymbolTableEntry));
     nextFreeEntry = nextFreeEntry->next;

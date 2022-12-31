@@ -14,7 +14,7 @@ COMMAND                                               PARAMS                    
 * '#n'    -> If symbol is not defined                (identifier)                    *#n my_int_identifier*
 * '#fv'   -> If symbol not defined to a value        (identifier, value)             *#nv my_identifier 23*
 * '#e'    -> Ends the if block                       NONE                            *#e*
-* '#i'    -> Include file                            (fileName)                      *#i include.tsc*             __@WIP__
+* '#i'    -> Include file                            (fileName)                      *#i include.tsc*           
 * '<'     -> comment blocks that will not be interpreted
 
 
